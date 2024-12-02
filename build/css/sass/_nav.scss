@@ -1,0 +1,125 @@
+#navigation_wrapper {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #165b33;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  transition: all 500ms ease;
+  transform: translateY(calc(100vh - 75px));
+
+  > .nav-bar {
+    box-shadow: 0 0 10px 2px #555;
+    position: relative;
+    z-index: 2;
+  }
+  .navigation {
+    list-style: none;
+    margin: 0;
+    padding: 18px 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    .nav-item button {
+      border-radius: 20px;
+      color: #333;
+      background: #f8b229;
+      border: none;
+      padding: 10px 15px;
+      font-size: 22px;
+      line-height: 22px;
+      font-family: 'Mate SC', serif;
+      transition: all 300ms ease;
+      &:hover,
+      &:focus {
+        color: white;
+        background: #bb2528;
+      }
+      &[disabled] {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  &.nav-open {
+    transform: translateY(20vh);
+    #song_select i:before {
+      content: '\f62a';
+      transform: scale(1.7);
+    }
+    .song-list {
+      height: calc(80vh - 75px);
+      padding: 15px 0;
+      overflow: scroll;
+      background: #fbefd8;
+    }
+  }
+
+  .song-list > nav {
+    display: block;
+    max-width: 410px;
+    width: 100%;
+    margin: auto;
+  }
+  .song-navigation {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .song-button {
+    text-indent: -36px;
+    position: relative;
+    z-index: 0;
+    font-family: 'Mate SC', serif;
+    font-weight: 400;
+    display: block;
+    width: 100%;
+    text-align: left;
+    font-size: 24px;
+    line-height: 28px;
+    padding: 15px 45px 15px 47px;
+    background: none;
+    border: none;
+    border-bottom: 1px dashed black;
+    scroll-margin-top: 40px;
+
+    &.current-song {
+      background-color: lightgreen;
+      &:before {
+        content: '\f5e1';
+        position: absolute;
+        right: 0px;
+        z-index: 1;
+        display: inline-block;
+        font-family: bootstrap-icons !important;
+        font-style: normal;
+        font-weight: 400 !important;
+        text-transform: none;
+        line-height: 1;
+        vertical-align: -0.125em;
+      }
+    }
+
+    &.prev-song {
+      background: #ccc;
+      color: #333;
+      &:before {
+        content: '\f272';
+        position: absolute;
+        right: 0px;
+        z-index: 1;
+        display: inline-block;
+        font-family: bootstrap-icons !important;
+        font-style: normal;
+        font-weight: 400 !important;
+        text-transform: none;
+        line-height: 1;
+        vertical-align: -0.125em;
+      }
+    }
+  }
+}

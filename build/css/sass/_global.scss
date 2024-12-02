@@ -1,0 +1,15 @@
+*:not(i, h1) {
+  font-family: 'EB Garamond', serif;
+  font-weight: 500;
+}
+h1 {
+  font-family: 'Mate SC', serif;
+  font-weight: 400;
+}
+body {
+  padding-bottom: 75px;
+  position: relative;
+  z-index: 0;
+  background: #fcfcfc;
+  color: #333;
+}

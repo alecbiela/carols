@@ -68,7 +68,7 @@ module.exports = function (grunt) {
           '<%= grunt.template.today("dd-mm-yyyy") %> */\n',
         compress: true,
         mangle: true,
-        sourceMap: false, //change to true for dev
+        sourceMap: true, //change to true for dev
       },
       main_js: {
         src: ['<%= dirs.src.js %>/app.js'],

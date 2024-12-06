@@ -30,46 +30,33 @@
     <script async defer src="js/app.min.js" type="module"></script>
   </head>
   <body>
-    <main x-data="app">
-      <div id="song_wrapper" x-init="loadSongs">
-        <div class="song staging left">
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-sm-10 col-md-8 offset-md-2 offset-sm-1">
-                <h1 class="song-title" class="song-title">Title</h1>
-              </div>
-              <div class="col-12 col-sm-10 col-md-8 offset-md-2 offset-sm-1">
-                <div class="song-lyrics"><p>Lyrics</p></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="song current">
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-sm-10 col-md-8 offset-md-2 offset-sm-1">
-                <h1 class="song-title" class="song-title">Title</h1>
-              </div>
-              <div class="col-12 col-sm-10 col-md-8 offset-md-2 offset-sm-1">
-                <div class="song-lyrics"><p>Lyrics</p></div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="song staging right">
-          <div class="container">
-            <div class="row">
-              <div class="col-12 col-sm-10 col-md-8 offset-md-2 offset-sm-1">
-                <h1 class="song-title" class="song-title">Title</h1>
-              </div>
-              <div class="col-12 col-sm-10 col-md-8 offset-md-2 offset-sm-1">
-                <div class="song-lyrics"><p>Lyrics</p></div>
+    <main
+      x-data="app"
+      x-init="songs = await (await fetch('data/songs.json')).json()"
+      x-effect="selectSong(currentSong)"
+      @touchStart="handleTouchStart"
+      @touchEnd="handleTouchEnd"
+    >
+      <template x-if="songs.length > 0">
+        <div id="song_wrapper">
+          <div class="song current">
+            <div class="container">
+              <div class="row">
+                <div class="col-12 col-sm-10 col-md-8 offset-md-2 offset-sm-1">
+                  <h1
+                    class="song-title"
+                    x-text="songs[currentSong].id + '. ' + songs[currentSong].name"
+                  ></h1>
+                </div>
+                <div class="col-12 col-sm-10 col-md-8 offset-md-2 offset-sm-1">
+                  <div class="song-lyrics" x-html="songs[currentSong].lyrics"></div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div id="navigation_wrapper">
+      </template>
+      <div id="navigation_wrapper" :class="{'nav-open': navOpen}">
         <div class="nav-bar">
           <div class="container">
             <nav title="Main">
@@ -80,14 +67,16 @@
                     class="nav-button"
                     type="button"
                     title="Previous Song"
-                    disabled
+                    :disabled="currentSong === 0"
+                    @click="currentSong = Math.max(currentSong - 1, 0)"
                   >
-                    <i class="bi-arrow-left"></i
-                    ><span class="d-none d-md-inline"> PREV</span>
+                    <i class="bi-arrow-left"></i><span class="d-none d-md-inline"> PREV</span>
                   </button>
                 </li>
                 <li class="nav-item">
-                  <button id="song_select"><i class="bi-menu-up"></i></button>
+                  <button id="song_select" @click="navOpen = !navOpen">
+                    <i class="bi-menu-up"></i>
+                  </button>
                   <select class="d-none" id="song_num">
                     <option value="1">1</option>
                   </select>
@@ -98,9 +87,10 @@
                     class="nav-button"
                     type="button"
                     title="Next Song"
+                    :disabled="currentSong === (songs.length - 1)"
+                    @click="currentSong = Math.min(currentSong + 1, songs.length - 1)"
                   >
-                    <span class="d-none d-md-inline">NEXT </span
-                    ><i class="bi-arrow-right"></i>
+                    <span class="d-none d-md-inline">NEXT </span><i class="bi-arrow-right"></i>
                   </button>
                 </li>
               </ul>
@@ -109,11 +99,21 @@
         </div>
         <div class="song-list">
           <nav title="Song Select">
-            <ol class="song-navigation"></ol>
+            <ol class="song-navigation">
+              <template x-for="(val, idx) in songs">
+                <li class="song-nav-item">
+                  <button
+                    type="button"
+                    :data-song-id="idx"
+                    x-text="songs[idx].id + '. ' + songs[idx].name"
+                    @click="selectSong(idx)"
+                    :class="{ 'song-button': true, 'prev-song': currentSong + 1 > songs[idx].id, 'current-song': currentSong + 1 === songs[idx].id }"
+                  ></button>
+                </li>
+              </template>
+            </ol>
           </nav>
         </div>
-
-        <span x-x-text="songs[0].id"></span>
       </div>
     </main>
   </body>

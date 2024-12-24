@@ -1,7 +1,7 @@
 #:schema node_modules/wrangler/config-schema.json
 name = "carols"
 compatibility_date = "2024-11-12"
-assets = { directory = "./public" }
+pages_build_output_dir = "./public"
 
 # Workers Logs
 # Docs: https://developers.cloudflare.com/workers/observability/logs/workers-logs/

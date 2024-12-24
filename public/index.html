@@ -21,96 +21,101 @@
     />
     <link rel="stylesheet" type="text/css" href="css/app.min.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <script
+    <!-- <script
       async
       defer
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
       type="text/javascript"
-    ></script>
-    <script async defer src="js/app.min.js" type="text/javascript"></script>
+    ></script> -->
   </head>
   <body>
-    <div id="song_wrapper">
-      <div class="song staging left">
-        <div class="container">
-          <div class="row">
-            <div class="col-12 col-sm-10 col-md-8 offset-md-2 offset-sm-1">
-              <h1 class="song-title" class="song-title">Title</h1>
-            </div>
-            <div class="col-12 col-sm-10 col-md-8 offset-md-2 offset-sm-1">
-              <div class="song-lyrics"><p>Lyrics</p></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="song current">
-        <div class="container">
-          <div class="row">
-            <div class="col-12 col-sm-10 col-md-8 offset-md-2 offset-sm-1">
-              <h1 class="song-title" class="song-title">Title</h1>
-            </div>
-            <div class="col-12 col-sm-10 col-md-8 offset-md-2 offset-sm-1">
-              <div class="song-lyrics"><p>Lyrics</p></div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="song staging right">
-        <div class="container">
-          <div class="row">
-            <div class="col-12 col-sm-10 col-md-8 offset-md-2 offset-sm-1">
-              <h1 class="song-title" class="song-title">Title</h1>
-            </div>
-            <div class="col-12 col-sm-10 col-md-8 offset-md-2 offset-sm-1">
-              <div class="song-lyrics"><p>Lyrics</p></div>
+    <main
+      x-data="app"
+      x-init="songs = await (await fetch('data/songs.json')).json()"
+      x-effect="selectSong(currentSong)"
+      @touchStart="handleTouchStart"
+      @touchEnd="handleTouchEnd"
+    >
+      <template x-if="songs.length > 0">
+        <div id="song_wrapper">
+          <div class="song current">
+            <div class="container">
+              <div class="row">
+                <div class="col-12 col-sm-10 col-md-8 offset-md-2 offset-sm-1">
+                  <h1
+                    class="song-title"
+                    x-text="songs[currentSong].id + '. ' + songs[currentSong].name"
+                  ></h1>
+                </div>
+                <div class="col-12 col-sm-10 col-md-8 offset-md-2 offset-sm-1">
+                  <div class="song-lyrics" x-html="songs[currentSong].lyrics"></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-    <div id="navigation_wrapper">
-      <div class="nav-bar">
-        <div class="container">
-          <nav title="Main">
-            <ul class="navigation">
-              <li class="nav-item">
-                <button
-                  id="prev_button"
-                  class="nav-button"
-                  type="button"
-                  title="Previous Song"
-                  disabled
-                >
-                  <i class="bi-arrow-left"></i
-                  ><span class="d-none d-md-inline"> PREV</span>
-                </button>
-              </li>
-              <li class="nav-item">
-                <button id="song_select"><i class="bi-menu-up"></i></button>
-                <select class="d-none" id="song_num">
-                  <option value="1">1</option>
-                </select>
-              </li>
-              <li class="nav-item">
-                <button
-                  id="next_button"
-                  class="nav-button"
-                  type="button"
-                  title="Next Song"
-                >
-                  <span class="d-none d-md-inline">NEXT </span
-                  ><i class="bi-arrow-right"></i>
-                </button>
-              </li>
-            </ul>
+      </template>
+      <div id="navigation_wrapper" :class="{'nav-open': navOpen}">
+        <div class="nav-bar">
+          <div class="container">
+            <nav title="Main">
+              <ul class="navigation">
+                <li class="nav-item">
+                  <button
+                    id="prev_button"
+                    class="nav-button"
+                    type="button"
+                    title="Previous Song"
+                    :disabled="currentSong === 0"
+                    @click.prevent="selectSong(currentSong - 1)"
+                  >
+                    <i class="bi-arrow-left"></i><span class="d-none d-md-inline"> PREV</span>
+                  </button>
+                </li>
+                <li class="nav-item">
+                  <button id="song_select" @click="navOpen = !navOpen">
+                    <i class="bi-menu-up"></i>
+                  </button>
+                  <select class="d-none" id="song_num">
+                    <option value="1">1</option>
+                  </select>
+                </li>
+                <li class="nav-item">
+                  <button
+                    id="next_button"
+                    class="nav-button"
+                    type="button"
+                    title="Next Song"
+                    :disabled="currentSong === (songs.length - 1)"
+                    @click.prevent="selectSong(currentSong + 1)"
+                  >
+                    <span class="d-none d-md-inline">NEXT </span><i class="bi-arrow-right"></i>
+                  </button>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+        <div class="song-list">
+          <nav title="Song Select">
+            <ol class="song-navigation">
+              <template x-for="(val, idx) in songs">
+                <li class="song-nav-item">
+                  <button
+                    type="button"
+                    :data-song-id="idx"
+                    x-text="songs[idx].id + '. ' + songs[idx].name"
+                    @click.prevent="selectSong(idx)"
+                    :class="{ 'song-button': true, 'prev-song': currentSong + 1 > songs[idx].id, 'current-song': currentSong + 1 === songs[idx].id }"
+                  ></button>
+                </li>
+              </template>
+            </ol>
           </nav>
         </div>
       </div>
-      <div class="song-list">
-        <nav title="Song Select">
-          <ol class="song-navigation"></ol>
-        </nav>
-      </div>
-    </div>
+    </main>
+    <script src="js/app.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
   </body>
 </html>

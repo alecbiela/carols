@@ -5,6 +5,7 @@ module.exports = function (grunt) {
 
   const sass = require('sass')
   require('load-grunt-tasks')(grunt)
+  grunt.loadNpmTasks('grunt-terser')
 
   // Project configuration.
   grunt.initConfig({
@@ -63,12 +64,21 @@ module.exports = function (grunt) {
     // Combine all JS files into one compressed file (including sub-folders)
     uglify: {
       options: {
-        banner:
-          '/*! <%= pkg.name %> ' +
-          '<%= grunt.template.today("dd-mm-yyyy") %> */\n',
+        banner: '/*! <%= pkg.name %> ' + '<%= grunt.template.today("dd-mm-yyyy") %> */\n',
         compress: true,
         mangle: true,
-        sourceMap: false, //change to true for dev
+        sourceMap: true, //change to true for dev
+      },
+      main_js: {
+        src: ['<%= dirs.src.js %>/app.js'],
+        dest: '<%= dirs.dest.js %>/app.min.js',
+      },
+    },
+    // Same as uglify but for ES6+ targeting
+    terser: {
+      options: {
+        ecma: 2016,
+        sourceMap: true,
       },
       main_js: {
         src: ['<%= dirs.src.js %>/app.js'],
@@ -96,7 +106,7 @@ module.exports = function (grunt) {
   })
 
   // Setup build tasks aliases
-  grunt.registerTask('build-js', ['jshint', 'uglify:main_js'])
+  grunt.registerTask('build-js', ['jshint', 'terser:main_js'])
   grunt.registerTask('build-css', ['sass', 'cssmin'])
   grunt.registerTask('build', ['build-js', 'build-css'])
 

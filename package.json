@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "deploy": "wrangler deploy",
-    "preview": "wrangler deploy --branch preview",
+    "deploy": "wrangler pages deploy",
+    "preview": "wrangler pages deploy --branch preview",
     "dev": "wrangler dev",
     "start": "wrangler dev"
   },
@@ -17,6 +17,7 @@
     "grunt-contrib-uglify": "^5.2.2",
     "grunt-contrib-watch": "^1.1.0",
     "grunt-sass": "^3.1.0",
+    "grunt-terser": "^2.0.0",
     "load-grunt-tasks": "^5.1.0",
     "sass": "^1.77.2",
     "wrangler": "*"

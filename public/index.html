@@ -67,7 +67,7 @@
                     type="button"
                     title="Previous Song"
                     :disabled="currentSong === 0"
-                    @click="selectSong(currentSong - 1)"
+                    @click.prevent="selectSong(currentSong - 1)"
                   >
                     <i class="bi-arrow-left"></i><span class="d-none d-md-inline"> PREV</span>
                   </button>
@@ -87,7 +87,7 @@
                     type="button"
                     title="Next Song"
                     :disabled="currentSong === (songs.length - 1)"
-                    @click="selectSong(currentSong + 1)"
+                    @click.prevent="selectSong(currentSong + 1)"
                   >
                     <span class="d-none d-md-inline">NEXT </span><i class="bi-arrow-right"></i>
                   </button>
@@ -105,7 +105,7 @@
                     type="button"
                     :data-song-id="idx"
                     x-text="songs[idx].id + '. ' + songs[idx].name"
-                    @click="selectSong(idx)"
+                    @click.prevent="selectSong(idx)"
                     :class="{ 'song-button': true, 'prev-song': currentSong + 1 > songs[idx].id, 'current-song': currentSong + 1 === songs[idx].id }"
                   ></button>
                 </li>

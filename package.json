@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "deploy": "wrangler deploy",
-    "preview": "wrangler deploy --branch preview",
+    "deploy": "wrangler pages deploy",
+    "preview": "wrangler pages deploy --branch preview",
     "dev": "wrangler dev",
     "start": "wrangler dev"
   },

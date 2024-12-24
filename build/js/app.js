@@ -11,8 +11,9 @@ document.addEventListener('alpine:init', () => {
       this.currentSong = num
       this.navOpen = false
       localStorage.setItem('currentsong', num)
-      const el = document.querySelector('.song-button[data-song-id="' + num + '"]')
-      if (el) el.scrollIntoView()
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      //const el = document.querySelector('.song-button[data-song-id="' + num + '"]')
+      //if (el) el.scrollIntoView()
     },
     handleTouchStart(e) {
       this.touch.x0 = e.changedTouches[0].screenX

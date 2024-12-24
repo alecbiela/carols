@@ -3,7 +3,7 @@ document.addEventListener('alpine:init', () => {
   'use strict'
   Alpine.data('app', () => ({
     SWIPE_THRESHOLD: 50,
-    currentSong: parseInt(localStorage.getItem('currentsong')) || 1,
+    currentSong: parseInt(localStorage.getItem('currentsong')) || 0,
     songs: [],
     navOpen: false,
     touch: { x0: 0, y0: 0, x1: 0, y1: 0 },
@@ -12,8 +12,6 @@ document.addEventListener('alpine:init', () => {
       this.navOpen = false
       localStorage.setItem('currentsong', num)
       window.scrollTo({ top: 0, behavior: 'smooth' })
-      //const el = document.querySelector('.song-button[data-song-id="' + num + '"]')
-      //if (el) el.scrollIntoView()
     },
     handleTouchStart(e) {
       this.touch.x0 = e.changedTouches[0].screenX

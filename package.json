@@ -5,8 +5,8 @@
   "scripts": {
     "deploy": "wrangler pages deploy",
     "preview": "wrangler pages deploy --branch preview",
-    "dev": "wrangler dev",
-    "start": "wrangler dev"
+    "dev": "wrangler pages dev",
+    "start": "wrangler pages dev"
   },
   "author": "Alec Bielanos",
   "devDependencies": {

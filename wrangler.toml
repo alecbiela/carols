@@ -1,6 +1,6 @@
 #:schema node_modules/wrangler/config-schema.json
 name = "carols"
-compatibility_date = "2024-11-12"
+compatibility_date = "2025-12-02"
 pages_build_output_dir = "./public"
 
 # Workers Logs
